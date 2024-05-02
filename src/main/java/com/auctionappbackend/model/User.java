@@ -14,11 +14,9 @@ public class User {
     private boolean isStore;
     private int idLogin;
 
-    // Constructor vacío
     public User() {
     }
 
-    // Constructor completo
     public User(int idUser, String name, String surname, Date birthday, String address, String country, String description, boolean isAdmin, boolean isStore, int idLogin) {
         this.idUser = idUser;
         this.name = name;
@@ -32,7 +30,7 @@ public class User {
         this.idLogin = idLogin;
     }
 
-    // Getters y Setters
+    // Getters and Setters
     public int getIdUser() {
         return idUser;
     }
@@ -116,17 +114,17 @@ public class User {
     // Método toString
     @Override
     public String toString() {
-        return "User{" +
-                "idUser=" + idUser +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", birthday=" + birthday +
-                ", address='" + address + '\'' +
-                ", country='" + country + '\'' +
-                ", description='" + description + '\'' +
-                ", isAdmin=" + isAdmin +
-                ", isStore=" + isStore +
-                ", idLogin=" + idLogin +
-                '}';
+        return "{" +
+                "idUser:" + idUser +
+                ", name:'" + name + '\'' +
+                ", surname:'" + surname + '\'' +
+                ", birthday:" + birthday +
+                ", address:'" + address + '\'' +
+                ", country:'" + country + '\'' +
+                ", description:'" + description + '\'' +
+                ", isAdmin:" + isAdmin +
+                ", isStore:" + isStore +
+                ", idLogin:" + idLogin + 
+                "}";
     }
 }
