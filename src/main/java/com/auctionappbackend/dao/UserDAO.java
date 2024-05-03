@@ -13,7 +13,7 @@ import com.auctionappbackend.config.DataBaseConnection;
 import com.auctionappbackend.model.User;
 import com.google.gson.*;
 
-public class UserDao {
+public class UserDAO {
 
     private Gson gson = new Gson();
 

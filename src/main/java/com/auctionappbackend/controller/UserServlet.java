@@ -1,6 +1,6 @@
 package com.auctionappbackend.controller;
 
-import com.auctionappbackend.dao.UserDao;
+import com.auctionappbackend.dao.UserDAO;
 import com.auctionappbackend.model.User;
 
 import jakarta.servlet.ServletException;
@@ -15,11 +15,11 @@ public class UserServlet extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private UserDao userDao;
+	private UserDAO userDao;
 
     @Override
     public void init() {
-        userDao = new UserDao(); // Inicializa UserDao para interactuar con la base de datos.
+        userDao = new UserDAO();
     }
 
     @Override
