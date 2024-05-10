@@ -46,7 +46,7 @@ public class Login {
     }
 
     /**
-     * Verifica si una contraseña dada coincide con el hash almacenado.
+     * Verifica si una contraseña coincide con el hash almacenado.
      * 
      * @param password La contraseña en texto plano
      * @return true si coinciden, false en caso contrario

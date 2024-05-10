@@ -28,16 +28,21 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = gson.fromJson(req.getReader(), User.class);
-        boolean result = userDao.createUser(user);
-        resp.setContentType("application/json");
-        resp.setCharacterEncoding("UTF-8");
-
-        if (result) {
-            resp.setStatus(HttpServletResponse.SC_CREATED);
-            resp.getWriter().write(gson.toJson("User created successfully"));
-        } else {
+        if (userDao.emailExists(user.getLoginDetails().getEmail())) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            resp.getWriter().write(gson.toJson("Failed to create user"));
+            resp.getWriter().write(gson.toJson("Failed to create user, email alredy exists"));
+        } else {
+            boolean result = userDao.createUser(user);
+            resp.setContentType("application/json");
+            resp.setCharacterEncoding("UTF-8");
+
+            if (result) {
+                resp.setStatus(HttpServletResponse.SC_CREATED);
+                resp.getWriter().write(gson.toJson("User created successfully"));
+            } else {
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                resp.getWriter().write(gson.toJson("Failed to create user"));
+            }	
         }
     }
 
@@ -80,13 +85,18 @@ public class UserServlet extends HttpServlet {
                 int id = Integer.parseInt(pathInfo.substring(1));
                 User user = gson.fromJson(req.getReader(), User.class);
                 user.setIdUser(id);
-
                 boolean result = userDao.updateUser(user);
-                if (result) {
-                    resp.getWriter().write(gson.toJson("User updated successfully"));
+                
+                if (userDao.emailExists(user.getLoginDetails().getEmail())) {
+                    resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    resp.getWriter().write(gson.toJson("Failed to update user, email alredy exists"));
                 } else {
-                    resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                    resp.getWriter().write(gson.toJson("User not found"));
+                    if (result) {
+                        resp.getWriter().write(gson.toJson("User updated successfully"));
+                    } else {
+                        resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                        resp.getWriter().write(gson.toJson("User not found"));
+                    }	
                 }
             } catch (NumberFormatException e) {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);

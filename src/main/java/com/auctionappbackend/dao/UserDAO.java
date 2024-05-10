@@ -9,6 +9,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO {
+	
+	public boolean emailExists(String email) {
+		String sql = "SELECT 1 FROM Login_details WHERE email = ?";
+		try {
+        	Connection conn = DataBaseConnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+	}
 
     // Crear usuario
     public boolean createUser(User user) {
