@@ -13,7 +13,7 @@ public class Login {
     public Login(int idLogin, String email, String password) {
         this.idLogin = idLogin;
         this.email = email;
-        setPassword(password); // Cifrar la contraseña
+        this.password = password;
     }
 
     public int getIdLogin() {
@@ -32,8 +32,12 @@ public class Login {
         this.email = email;
     }
 
-    public String getPasswordHash() {
+	public String getPassword() {
         return password;
+    }
+    
+    public void setPassword(String password) {
+    	this.password = password;
     }
 
     /**
@@ -41,8 +45,8 @@ public class Login {
      * 
      * @param password La contraseña en texto plano
      */
-    public void setPassword(String password) {
-        this.password = Password.hashPassword(password);
+    public String hashPassword(String password) {
+        return Password.hashPassword(password);
     }
 
     /**

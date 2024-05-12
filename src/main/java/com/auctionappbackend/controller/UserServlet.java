@@ -2,6 +2,7 @@ package com.auctionappbackend.controller;
 
 import com.auctionappbackend.dao.UserDAO;
 import com.auctionappbackend.model.User;
+import com.auctionappbackend.utils.Password;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,9 +14,7 @@ import com.google.gson.Gson;
 
 @WebServlet("/users/*")
 public class UserServlet extends HttpServlet {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private UserDAO userDao;
     private Gson gson = new Gson();
@@ -28,6 +27,8 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = gson.fromJson(req.getReader(), User.class);
+        String hashedPassword = user.getLoginDetails().hashPassword(user.getLoginDetails().getPassword());
+        user.getLoginDetails().setPassword(hashedPassword);
         if (userDao.emailExists(user.getLoginDetails().getEmail())) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.getWriter().write(gson.toJson("Failed to create user, email alredy exists"));
@@ -57,7 +58,7 @@ public class UserServlet extends HttpServlet {
             List<User> userList = userDao.getAllUsers();
             resp.getWriter().write(gson.toJson(userList));
         } else {
-            // Obtener un usuario por su ID
+            // Obtener un usuario por su Id
             try {
                 int id = Integer.parseInt(pathInfo.substring(1));
                 User user = userDao.getUserById(id);

@@ -33,5 +33,20 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="C:/Users/esteb/Proyectos/FP_DAM/RepositoriosProyectoFinal1erAño/AuctionAppBackend/lib/jackson-annotations-2.17.1.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="C:/Users/esteb/Proyectos/FP_DAM/RepositoriosProyectoFinal1erAño/AuctionAppBackend/lib/jackson-core-2.17.1.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="C:/Users/esteb/Proyectos/FP_DAM/RepositoriosProyectoFinal1erAño/AuctionAppBackend/lib/jackson-databind-2.17.1.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

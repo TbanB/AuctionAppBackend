@@ -9,32 +9,27 @@ public class DataBaseConnection {
     private static final String USER = "root";
     private static final String PASSWORD = "123456789Hola";
 
-    private static Connection conexion = null;
-
     private DataBaseConnection() {
     }
 
     public static Connection getConnection() {
-        if (conexion == null) {
-            try {
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                conexion = DriverManager.getConnection(URL, USER, PASSWORD);
-            } catch (ClassNotFoundException e) {
-                System.err.println("Error: MySQL JDBC Driver not found.");
-                e.printStackTrace();
-            } catch (SQLException e) {
-                System.err.println("Error: Unable to connect to the database.");
-                e.printStackTrace();
-            }
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            return DriverManager.getConnection(URL, USER, PASSWORD);
+        } catch (ClassNotFoundException e) {
+            System.err.println("Error: MySQL JDBC Driver not found.");
+            e.printStackTrace();
+        } catch (SQLException e) {
+            System.err.println("Error: Unable to connect to the database.");
+            e.printStackTrace();
         }
-        return conexion;
+        return null;
     }
 
-    public static void closeConnection() {
-        if (conexion != null) {
+    public static void closeConnection(Connection conn) {
+        if (conn != null) {
             try {
-                conexion.close();
-                conexion = null;
+                conn.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }

@@ -86,7 +86,7 @@ public class User {
         this.description = description;
     }
 
-    public boolean isAdmin() {
+    public boolean getIsAdmin() {
         return isAdmin;
     }
 
@@ -109,6 +109,10 @@ public class User {
     public void setLoginDetails(Login loginDetails) {
         this.loginDetails = loginDetails;
     }
+    
+    public String getRole() {
+    	return (isAdmin) ? "Admin" : "SellerBuyer";
+    } 
 
     @Override
     public String toString() {
