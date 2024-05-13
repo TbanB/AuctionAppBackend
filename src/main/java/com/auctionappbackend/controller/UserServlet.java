@@ -2,8 +2,6 @@ package com.auctionappbackend.controller;
 
 import com.auctionappbackend.dao.UserDAO;
 import com.auctionappbackend.model.User;
-import com.auctionappbackend.utils.Password;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
