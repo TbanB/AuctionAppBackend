@@ -12,6 +12,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
@@ -23,8 +24,12 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        userDao = new UserDAO();
-        loginDao = new LoginDAO();
+        try {
+            userDao = UserDAO.getInstance();
+            loginDao = LoginDAO.getInstance();
+        } catch (SQLException e) {
+            throw new ServletException("Unable to initialize UserDAO or LoginDAO", e);
+        }
     }
 
     @Override
