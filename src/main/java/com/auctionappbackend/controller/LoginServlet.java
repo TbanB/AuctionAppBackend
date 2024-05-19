@@ -3,6 +3,7 @@ package com.auctionappbackend.controller;
 import com.auctionappbackend.dao.LoginDAO;
 import com.auctionappbackend.dao.UserDAO;
 import com.auctionappbackend.model.Login;
+import com.auctionappbackend.model.LoginResponse;
 import com.auctionappbackend.model.User;
 import com.auctionappbackend.utils.Token;
 
@@ -46,7 +47,8 @@ public class LoginServlet extends HttpServlet {
                 loginDao.saveToken(user.getIdUser(), token);
                 System.out.print(">>> Accedemos a la app");
                 // Devolver el token al usuario
-                resp.getWriter().write(gson.toJson(token));
+                LoginResponse loginResponse = new LoginResponse(user.getIdUser(), token);
+                resp.getWriter().write(gson.toJson(loginResponse));
             } else {
                 resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 resp.getWriter().write(gson.toJson("Invalid email or password"));
