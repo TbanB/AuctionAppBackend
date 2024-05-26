@@ -19,10 +19,11 @@ public class Token {
         long expMillis = nowMillis + 604800016;
         Date exp = new Date(expMillis);
 
-        System.out.println("Token Issued at: " + now);
-        System.out.println("Token Expires at: " + exp);
-
-        return JWT.create()
+        System.out.println(">>> 1: " + userId);
+        System.out.println(">>> 2: " + role);
+        System.out.println(">>> 3: " + name);
+        
+        String token = JWT.create()
                 .withIssuer("auction_app")
                 .withAudience("auction_app_frontend")
                 .withClaim("role", role)
@@ -31,6 +32,8 @@ public class Token {
                 .withIssuedAt(now)
                 .withExpiresAt(exp)
                 .sign(ALGORITHM);
+
+        return token;
     }
 
     public static int verifyToken(String token) {

@@ -41,12 +41,11 @@ public class LoginDAO {
         }
     }
 
-    public boolean revokeToken(int userId, String token) throws SQLException {
-        String sql = "UPDATE Sessions SET endTime = NOW(), isRevoked = 1 WHERE idUser = ? AND token = ?";
+    public boolean revokeAllUserToken(int userId) throws SQLException {
+        String sql = "UPDATE Sessions SET endTime = NOW(), isRevoked = 1 WHERE idUser = ?";
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, userId);
-            stmt.setString(2, token);
             int affectedRows = stmt.executeUpdate();
             return affectedRows > 0;
         }

@@ -97,18 +97,12 @@ public class UserServlet extends HttpServlet {
                 int id = Integer.parseInt(pathInfo.substring(1));
                 User user = gson.fromJson(req.getReader(), User.class);
                 user.setIdUser(id);
-
-                if (userDao.emailExists(user.getLoginDetails().getEmail())) {
-                    resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                    resp.getWriter().write(gson.toJson("Failed to update user, email already exists"));
+                boolean result = userDao.updateUser(user);
+                if (result) {
+                    resp.getWriter().write(gson.toJson("User updated successfully"));
                 } else {
-                    boolean result = userDao.updateUser(user);
-                    if (result) {
-                        resp.getWriter().write(gson.toJson("User updated successfully"));
-                    } else {
-                        resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                        resp.getWriter().write(gson.toJson("User not found"));
-                    }
+                    resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                    resp.getWriter().write(gson.toJson("User not found"));
                 }
             } catch (NumberFormatException e) {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);

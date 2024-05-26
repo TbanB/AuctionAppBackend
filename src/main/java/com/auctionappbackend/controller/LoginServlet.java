@@ -41,14 +41,24 @@ public class LoginServlet extends HttpServlet {
         try {
             Login loginRequest = gson.fromJson(req.getReader(), Login.class);
             User user = userDao.getUserByEmail(loginRequest.getEmail());
+            System.out.print(user.toString());
 
             if (user != null && user.getLoginDetails().verifyPassword(loginRequest.getPassword())) {
+            	System.out.print(">>> Hay usuario y valida el password");
+            	loginDao.revokeAllUserToken(user.getIdUser()); // revocamos el token
                 String token = Token.generateToken(user.getIdUser(), user.getRole(), user.getName());
-                loginDao.saveToken(user.getIdUser(), token);
-                System.out.print(">>> Accedemos a la app");
+                System.out.println("token: " + token);
+                Boolean tokenCreated = loginDao.saveToken(user.getIdUser(), token); // guardamos el nuevo token
+                System.out.println(">>> Accedemos a la app" + tokenCreated);
                 // Devolver el token al usuario
-                LoginResponse loginResponse = new LoginResponse(user.getIdUser(), token);
-                resp.getWriter().write(gson.toJson(loginResponse));
+                if (tokenCreated) {
+                	LoginResponse loginResponse = new LoginResponse(user.getIdUser(), token);
+                    resp.getWriter().write(gson.toJson(loginResponse));
+                } else {
+                    System.out.println(">>> No se ha creado el token" + tokenCreated);
+                    resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    resp.getWriter().write(gson.toJson("Token not created"));
+                }
             } else {
                 resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 resp.getWriter().write(gson.toJson("Invalid email or password"));
@@ -56,6 +66,31 @@ public class LoginServlet extends HttpServlet {
         } catch (Exception e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             resp.getWriter().write(gson.toJson("An error occurred: " + e.getMessage()));
+        }
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    	String pathInfo = req.getPathInfo();
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
+
+        if (pathInfo != null && !pathInfo.equals("/")) {
+            try {
+                int id = Integer.parseInt(pathInfo.substring(1));
+                boolean result = loginDao.revokeAllUserToken(id);
+                if (result) {
+                    resp.getWriter().write(gson.toJson("Token revoked successfully"));
+                } else {
+                    resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                    resp.getWriter().write(gson.toJson("Problems to revoke token"));
+                }
+            } catch (SQLException e) {
+                throw new ServletException("Error accessing database", e);
+            }
+        } else {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resp.getWriter().write(gson.toJson("User ID is required"));
         }
     }
 }
