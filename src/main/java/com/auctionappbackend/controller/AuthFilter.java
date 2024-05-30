@@ -22,11 +22,7 @@ public class AuthFilter implements Filter {
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		try {
-			loginDao = LoginDAO.getInstance();
-		} catch (SQLException e) {
-			throw new ServletException("Unable to initialize LoginDAO", e);
-		}
+		loginDao = LoginDAO.getInstance();
 	}
 
 	@Override
@@ -51,6 +47,12 @@ public class AuthFilter implements Filter {
 
 		// Permitir solicitudes de POST a /users para la creación de nuevos usuarios
 		if (path.equals("/AuctionAppBackend/users") && method.equals("POST")) {
+			chain.doFilter(request, response);
+			return;
+		}
+
+		// Permitir solicitudes de GET a /auctions para la creación de nuevos usuarios
+		if ((path.equals("/AuctionAppBackend/auctions") || path.equals("/AuctionAppBackend/auctions/*")) && method.equals("GET")) {
 			chain.doFilter(request, response);
 			return;
 		}

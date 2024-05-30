@@ -11,17 +11,11 @@ public class UserDAO {
 
     private static UserDAO instance = null;
 
-    private UserDAO() throws SQLException {
-        // El constructor no necesita inicializar la conexión
-    }
+    private UserDAO() {}
 
-    public static UserDAO getInstance() throws SQLException {
+    public static UserDAO getInstance() {
         if (instance == null) {
-            synchronized (UserDAO.class) {
-                if (instance == null) {
-                    instance = new UserDAO();
-                }
-            }
+        	instance = new UserDAO();
         }
         return instance;
     }
@@ -83,7 +77,6 @@ public class UserDAO {
         }
     }
 
-    // Método para obtener un usuario por su ID
     public User getUserById(int idUser) throws SQLException {
         String sql = "SELECT u.idUser, u.name, u.surname, u.birthday, u.address, u.country, u.description, u.isAdmin, u.isStore, l.idLogin, l.email, l.passwordHash " +
                 "FROM Users u JOIN Login_details l ON u.idLogin = l.idLogin WHERE u.idUser = ?";
@@ -116,7 +109,7 @@ public class UserDAO {
         return null;
     }
 
-    // Método para obtener un usuario por su email
+
     public User getUserByEmail(String email) throws SQLException {
         String sql = "SELECT u.idUser, u.name, u.surname, u.birthday, u.address, u.country, u.description, u.isAdmin, u.isStore, l.idLogin, l.email, l.passwordHash " +
                 "FROM Users u JOIN Login_details l ON u.idLogin = l.idLogin WHERE l.email = ?";
@@ -144,7 +137,6 @@ public class UserDAO {
         return null;
     }
 
-    // Método para obtener un listado de todos los usuarios
     public List<User> getAllUsers() throws SQLException {
         String sql = "SELECT u.idUser, u.name, u.surname, u.birthday, u.address, u.country, u.description, u.isAdmin, u.isStore, l.idLogin, l.email, l.passwordHash " +
                 "FROM Users u JOIN Login_details l ON u.idLogin = l.idLogin";
@@ -178,7 +170,6 @@ public class UserDAO {
         return users;
     }
 
-    // Método para actualizar un usuario
     public boolean updateUser(User user) throws SQLException {
         String sql = "UPDATE Users SET name = ?, surname = ?, birthday = ?, address = ?, country = ?, description = ?, isAdmin = ?, isStore = ? WHERE idUser = ?";
         try (Connection conn = getConnection();
@@ -198,13 +189,12 @@ public class UserDAO {
         }
     }
 
-    // Método para eliminar un usuario
     public boolean deleteUser(int idUser) throws SQLException {
         String sqlSession = "DELETE FROM Sessions WHERE idUser = ?";
         String sqlUser = "DELETE FROM Users WHERE idUser = ?";
         String sqlLogin = "DELETE FROM Login_details WHERE idLogin = ?";
         try (Connection conn = getConnection()) {
-            conn.setAutoCommit(false); // Empezar una transacción
+            conn.setAutoCommit(false);
 
             // Obtener el ID de login asociado al usuario
             int idLogin = 0;

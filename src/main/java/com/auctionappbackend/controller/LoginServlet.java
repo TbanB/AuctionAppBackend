@@ -25,12 +25,8 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        try {
-            userDao = UserDAO.getInstance();
-            loginDao = LoginDAO.getInstance();
-        } catch (SQLException e) {
-            throw new ServletException("Unable to initialize UserDAO or LoginDAO", e);
-        }
+        userDao = UserDAO.getInstance();
+        loginDao = LoginDAO.getInstance();
     }
 
     @Override

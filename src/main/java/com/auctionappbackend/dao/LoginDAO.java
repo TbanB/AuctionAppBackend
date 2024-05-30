@@ -11,17 +11,11 @@ public class LoginDAO {
 
     private static LoginDAO instance = null;
 
-    private LoginDAO() throws SQLException {
-        // El constructor no necesita inicializar la conexión
-    }
+    private LoginDAO() {}
 
-    public static LoginDAO getInstance() throws SQLException {
+    public static LoginDAO getInstance() {
         if (instance == null) {
-            synchronized (LoginDAO.class) {
-                if (instance == null) {
-                    instance = new LoginDAO();
-                }
-            }
+        	instance = new LoginDAO();
         }
         return instance;
     }

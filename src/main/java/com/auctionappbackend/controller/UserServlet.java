@@ -19,12 +19,8 @@ public class UserServlet extends HttpServlet {
     private Gson gson = new Gson();
 
     @Override
-    public void init() throws ServletException {
-        try {
-            userDao = UserDAO.getInstance();
-        } catch (SQLException e) {
-            throw new ServletException("Unable to initialize UserDAO", e);
-        }
+    public void init() {
+        userDao = UserDAO.getInstance();
     }
 
     @Override
@@ -122,6 +118,7 @@ public class UserServlet extends HttpServlet {
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
 
+        System.out.println(">>>>>>>>> Entra en Delete");
         if (pathInfo != null && !pathInfo.equals("/")) {
             try {
                 int id = Integer.parseInt(pathInfo.substring(1));
