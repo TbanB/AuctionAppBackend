@@ -37,6 +37,19 @@ public class AuctionServlet extends HttpServlet {
                 // Obtener la lista de todas las subastas
                 List<Auction> auctionList = auctionDao.getAllAuctions();
                 resp.getWriter().write(gson.toJson(auctionList));
+            } else if (pathInfo.startsWith("/category/")) {
+                // Obtener subastas por categoría
+                try {
+                    int categoryId = Integer.parseInt(pathInfo.substring(10));
+                    List<Auction> auctionList = auctionDao.getAuctionsByCategory(categoryId);
+                    resp.getWriter().write(gson.toJson(auctionList));
+                } catch (NumberFormatException e) {
+                    resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    resp.getWriter().write(gson.toJson("Invalid category ID"));
+                }
+            } else if (pathInfo == null || pathInfo.equals("/") || pathInfo.equals("/active")) {
+                    List<Auction> activeAuctions = auctionDao.getActiveAuctions();
+                    resp.getWriter().write(gson.toJson(activeAuctions));
             } else {
                 // Obtener una subasta por su Id
                 try {

@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 
 public class Auction {
     private int idAuction;
+    private int idUser;
     private Product product;
     private double initialValue;
     private Double finalValue;
@@ -12,8 +13,9 @@ public class Auction {
     private Timestamp endTime;
     private boolean isActive;
 
-    public Auction(int idAuction, Product product, double initialValue, Double finalValue, double goalValue, Timestamp startTime, Timestamp endTime, boolean isActive) {
+    public Auction(int idAuction, int idUser, Product product, double initialValue, Double finalValue, double goalValue, Timestamp startTime, Timestamp endTime, boolean isActive) {
         this.idAuction = idAuction;
+        this.idUser = idUser;
         this.product = product;
         this.initialValue = initialValue;
         this.finalValue = finalValue;
@@ -30,6 +32,14 @@ public class Auction {
 
     public void setIdAuction(int idAuction) {
         this.idAuction = idAuction;
+    }
+    
+    public int getIdUser() {
+    	return idUser;
+    }
+    
+    public void setIdUser(int idUser) {
+    	this.idUser = idUser;
     }
 
     public Product getProduct() {
