@@ -15,20 +15,36 @@ import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.sql.SQLException;
 
+/**
+ * Gestiona las solicitudes de inicio de sesión y revocación de tokens.
+ */
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
-	private static final long serialVersionUID = 1L;
-	private UserDAO userDao;
-	private LoginDAO loginDao;
+    private static final long serialVersionUID = 1L;
+    private UserDAO userDao;
+    private LoginDAO loginDao;
     private Gson gson = new Gson();
 
+    /**
+     * Inicializa el servlet configurando los DAOs de usuario y login.
+     * 
+     * @throws ServletException si ocurre un error durante la inicialización.
+     */
     @Override
     public void init() throws ServletException {
         userDao = UserDAO.getInstance();
         loginDao = LoginDAO.getInstance();
     }
 
+    /**
+     * Maneja las solicitudes POST para iniciar sesión.
+     * 
+     * @param req el objeto HttpServletRequest que contiene la solicitud del cliente.
+     * @param resp el objeto HttpServletResponse que contiene la respuesta del servlet.
+     * @throws ServletException si ocurre un error del servlet.
+     * @throws IOException si ocurre un error de entrada/salida.
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
@@ -40,15 +56,15 @@ public class LoginServlet extends HttpServlet {
             System.out.print(user.toString());
 
             if (user != null && user.getLoginDetails().verifyPassword(loginRequest.getPassword())) {
-            	System.out.print(">>> Hay usuario y valida el password");
-            	loginDao.revokeAllUserToken(user.getIdUser()); // revocamos el token
+                System.out.print(">>> Hay usuario y valida el password");
+                loginDao.revokeAllUserToken(user.getIdUser()); // revocamos el token
                 String token = Token.generateToken(user.getIdUser(), user.getRole(), user.getName());
                 System.out.println("token: " + token);
                 Boolean tokenCreated = loginDao.saveToken(user.getIdUser(), token); // guardamos el nuevo token
                 System.out.println(">>> Accedemos a la app" + tokenCreated);
                 // Devolver el token al usuario
                 if (tokenCreated) {
-                	LoginResponse loginResponse = new LoginResponse(user.getIdUser(), token);
+                    LoginResponse loginResponse = new LoginResponse(user.getIdUser(), token);
                     resp.getWriter().write(gson.toJson(loginResponse));
                 } else {
                     System.out.println(">>> No se ha creado el token" + tokenCreated);
@@ -65,9 +81,17 @@ public class LoginServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Maneja las solicitudes PUT para revocar tokens de un usuario específico.
+     * 
+     * @param req el objeto HttpServletRequest que contiene la solicitud del cliente.
+     * @param resp el objeto HttpServletResponse que contiene la respuesta del servlet.
+     * @throws ServletException si ocurre un error del servlet.
+     * @throws IOException si ocurre un error de entrada/salida.
+     */
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    	String pathInfo = req.getPathInfo();
+        String pathInfo = req.getPathInfo();
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
 

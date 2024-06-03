@@ -1,5 +1,6 @@
 package com.auctionappbackend.utils;
 
+import com.auctionappbackend.model.TokenDetail;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -36,19 +37,21 @@ public class Token {
         return token;
     }
 
-    public static int verifyToken(String token) {
+    public static TokenDetail verifyToken(String token) {
         try {
             JWTVerifier verifier = JWT.require(ALGORITHM)
                     .withIssuer("auction_app")
                     .build();
             DecodedJWT jwt = verifier.verify(token);
-            return jwt.getClaim("userId").asInt();
+            int userId = jwt.getClaim("userId").asInt();
+            String role = jwt.getClaim("role").asString();
+            return new TokenDetail(userId, role);
         } catch (TokenExpiredException tee) {
             System.out.println("Token has expired: " + tee.getMessage());
-            return -2;
+            return null;
         } catch (JWTVerificationException jve) {
             System.out.println("Token verification failed: " + jve.getMessage());
-            return -1;
+            return null;
         }
     }
 }

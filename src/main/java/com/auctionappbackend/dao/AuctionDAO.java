@@ -108,6 +108,51 @@ public class AuctionDAO {
         }
         return auctions;
     }
+
+
+    public List<Auction> getAuctionsByUserId(int idUser) throws SQLException {
+        String sql = "SELECT a.idAuction, a.idUser, a.initialValue, a.finalValue, a.goalValue, a.startTime, a.endTime, a.isActive, " +
+                     "p.idProduct, p.idCategory, p.prodName, p.prodDescription, p.year, c.catName " +
+                     "FROM Auctions a " +
+                     "JOIN Products p ON a.idProduct = p.idProduct " +
+                     "JOIN Product_categories c ON p.idCategory = c.idCategory " +
+                     "WHERE a.idUser = ?";
+        
+        List<Auction> auctions = new ArrayList<>();
+        
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idUser);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Product product = new Product(
+                            rs.getInt("idProduct"),
+                            rs.getInt("idCategory"),
+                            rs.getString("prodName"),
+                            rs.getString("prodDescription"),
+                            rs.getInt("year"),
+                            rs.getString("catName")
+                    );
+
+                    Auction auction = new Auction(
+                            rs.getInt("idAuction"),
+                            rs.getInt("idUser"),
+                            product,
+                            rs.getDouble("initialValue"),
+                            rs.getObject("finalValue") != null ? rs.getDouble("finalValue") : null,
+                            rs.getDouble("goalValue"),
+                            rs.getTimestamp("startTime"),
+                            rs.getTimestamp("endTime"),
+                            rs.getBoolean("isActive")
+                    );
+
+                    auctions.add(auction);
+                }
+            }
+        }
+        return auctions;
+    }
+
     
     public List<Auction> getAuctionsByCategory(int categoryId) throws SQLException {
         String sql = "SELECT a.idAuction, a.idUser, a.initialValue, a.finalValue, a.goalValue, a.startTime, a.endTime, a.isActive, " +
