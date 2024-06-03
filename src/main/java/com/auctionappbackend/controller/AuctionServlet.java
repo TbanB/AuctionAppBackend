@@ -15,8 +15,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * Gestiona las solicitudes relacionadas con las subastas.
- * Métodos para obtener todas las subastas, subastas por categoría, 
+ * Servlet que maneja las solicitudes relacionadas con las subastas.
+ * Proporciona puntos finales para obtener todas las subastas, subastas por categoría, 
  * subastas activas y una subasta específica por su ID.
  */
 @WebServlet("/auctions/*")

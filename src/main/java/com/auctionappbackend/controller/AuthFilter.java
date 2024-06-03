@@ -65,31 +65,15 @@ public class AuthFilter implements Filter {
         String path = httpRequest.getRequestURI();
         String method = httpRequest.getMethod();
 
-        // Permitir solicitudes de POST a /users para la creación de nuevos usuarios
+        // Permitir solicitudes sin autenticación para ciertas rutas
         if ((path.equals("/AuctionAppBackend/users") && method.equals("POST"))
-        		|| (path.equals("/AuctionAppBackend/users/") && method.equals("GET"))) {
-            chain.doFilter(request, response);
-            return;
-        }
-
-        // Permitir solicitudes de GET a /auctions, /auctions/active, /auctions/category/{id} sin autenticación
-        if ((path.equals("/AuctionAppBackend/auctions")
+                || (path.equals("/AuctionAppBackend/users/") && method.equals("GET"))
+                || (path.equals("/AuctionAppBackend/auctions")
                 || path.startsWith("/AuctionAppBackend/auctions/category/")
                 || path.startsWith("/AuctionAppBackend/auctions/user/")
-                || path.startsWith("/AuctionAppBackend/auctions/active")) 
-                && method.equals("GET")) {
-            chain.doFilter(request, response);
-            return;
-        }
-
-        // Permitir solicitudes de GET a /categories sin autenticación
-        if (path.equals("/AuctionAppBackend/categories") && method.equals("GET")) {
-            chain.doFilter(request, response);
-            return;
-        }
-
-        // Omitir verificación en ruta login
-        if (path.startsWith("/AuctionAppBackend/login")) {
+                || path.startsWith("/AuctionAppBackend/auctions/active")
+                || path.equals("/AuctionAppBackend/categories") && method.equals("GET"))
+                || path.startsWith("/AuctionAppBackend/login")) {
             chain.doFilter(request, response);
             return;
         }

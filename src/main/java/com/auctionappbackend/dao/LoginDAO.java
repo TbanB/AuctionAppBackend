@@ -7,12 +7,21 @@ import java.sql.SQLException;
 
 import com.auctionappbackend.config.DataBaseConnection;
 
+/**
+ * DAO (Data Access Object) para la clase Login.
+ * Proporciona métodos para interactuar con la base de datos de sesiones y tokens.
+ */
 public class LoginDAO {
 
     private static LoginDAO instance = null;
 
     private LoginDAO() {}
 
+    /**
+     * Obtiene la instancia única de LoginDAO.
+     * 
+     * @return la instancia de LoginDAO.
+     */
     public static LoginDAO getInstance() {
         if (instance == null) {
         	instance = new LoginDAO();
@@ -24,6 +33,14 @@ public class LoginDAO {
         return DataBaseConnection.getConnection();
     }
 
+    /**
+     * Guarda un token de sesión en la base de datos.
+     * 
+     * @param userId el ID del usuario.
+     * @param token el token de sesión.
+     * @return true si el token se guardó correctamente, false en caso contrario.
+     * @throws SQLException si ocurre un error al acceder a la base de datos.
+     */
     public boolean saveToken(int userId, String token) throws SQLException {
         String sql = "INSERT INTO Sessions (idUser, token, startTime, isRevoked) VALUES (?, ?, NOW(), 0)";
         try (Connection conn = getConnection();
@@ -35,6 +52,13 @@ public class LoginDAO {
         }
     }
 
+    /**
+     * Revoca todos los tokens de sesión de un usuario específico.
+     * 
+     * @param userId el ID del usuario.
+     * @return true si los tokens se revocaron correctamente, false en caso contrario.
+     * @throws SQLException si ocurre un error al acceder a la base de datos.
+     */
     public boolean revokeAllUserToken(int userId) throws SQLException {
         String sql = "UPDATE Sessions SET endTime = NOW(), isRevoked = 1 WHERE idUser = ?";
         try (Connection conn = getConnection();
@@ -45,6 +69,14 @@ public class LoginDAO {
         }
     }
 
+    /**
+     * Valida un token de sesión para un usuario específico.
+     * 
+     * @param userId el ID del usuario.
+     * @param token el token de sesión.
+     * @return true si el token es válido, false en caso contrario.
+     * @throws SQLException si ocurre un error al acceder a la base de datos.
+     */
     public boolean validateToken(int userId, String token) throws SQLException {
         String sql = "SELECT token FROM Sessions WHERE idUser = ? AND token = ? AND endTime IS NULL AND isRevoked = 0";
         try (Connection conn = getConnection();

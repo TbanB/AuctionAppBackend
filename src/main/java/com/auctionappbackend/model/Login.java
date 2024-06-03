@@ -1,5 +1,8 @@
 package com.auctionappbackend.model;
 
+/**
+ * Clase que representa los datos de inicio de sesión de un usuario.
+ */
 import com.auctionappbackend.utils.Password;
 
 public class Login {

@@ -1,5 +1,8 @@
 package com.auctionappbackend.model;
 
+/**
+ * Clase que representa los detalles de un token de autenticación.
+ */
 public class TokenDetail {
     private int userId;
     private String role;

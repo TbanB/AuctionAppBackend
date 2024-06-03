@@ -1,5 +1,8 @@
 package com.auctionappbackend.model;
 
+/**
+ * Clase que representa la respuesta del servidor al intentar iniciar sesión.
+ */
 public class LoginResponse {
     private int userId;
     private String token;

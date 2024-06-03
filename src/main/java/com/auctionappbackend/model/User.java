@@ -2,6 +2,9 @@ package com.auctionappbackend.model;
 
 import java.util.Date;
 
+/**
+ * Clase que representa un usuario en la aplicación.
+ */
 public class User {
     private int idUser;
     private String name;

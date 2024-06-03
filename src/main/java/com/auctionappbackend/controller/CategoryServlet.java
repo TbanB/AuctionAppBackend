@@ -15,8 +15,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * Gestiona las solicitudes relacionadas con las categorías.
- * Método para obtener todas las categorías.
+ * Servlet que maneja las solicitudes relacionadas con las categorías.
+ * Proporciona un punto final para obtener todas las categorías.
  */
 @WebServlet("/categories/*")
 public class CategoryServlet extends HttpServlet {

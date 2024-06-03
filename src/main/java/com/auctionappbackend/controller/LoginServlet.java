@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 /**
- * Gestiona las solicitudes de inicio de sesión y revocación de tokens.
+ * Servlet que maneja las solicitudes de inicio de sesión y revocación de tokens.
  */
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {

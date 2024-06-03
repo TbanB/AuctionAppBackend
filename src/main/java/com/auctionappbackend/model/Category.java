@@ -1,5 +1,8 @@
 package com.auctionappbackend.model;
 
+/**
+ * Clase que representa una categoría de subasta.
+ */
 public class Category {
 
     private int idCategory;

@@ -2,6 +2,9 @@ package com.auctionappbackend.model;
 
 import java.sql.Timestamp;
 
+/**
+ * Clase que representa una subasta en la aplicación.
+ */
 public class Auction {
     private int idAuction;
     private int idUser;

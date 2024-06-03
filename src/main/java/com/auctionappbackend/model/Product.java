@@ -1,5 +1,8 @@
 package com.auctionappbackend.model;
 
+/**
+ * Clase que representa un producto en la aplicación de subastas.
+ */
 public class Product {
 
     private int idProduct;

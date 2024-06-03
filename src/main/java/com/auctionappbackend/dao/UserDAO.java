@@ -7,12 +7,21 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * DAO (Data Access Object) para la clase User.
+ * Proporciona métodos para interactuar con la base de datos de usuarios.
+ */
 public class UserDAO {
 
     private static UserDAO instance = null;
 
     private UserDAO() {}
 
+    /**
+     * Obtiene la instancia única de UserDAO.
+     * 
+     * @return la instancia de UserDAO.
+     */
     public static UserDAO getInstance() {
         if (instance == null) {
         	instance = new UserDAO();
@@ -24,6 +33,13 @@ public class UserDAO {
         return DataBaseConnection.getConnection();
     }
 
+    /**
+     * Verifica si un correo electrónico ya está registrado en la base de datos.
+     * 
+     * @param email el correo electrónico a verificar.
+     * @return true si el correo electrónico ya existe, false en caso contrario.
+     * @throws SQLException si ocurre un error al acceder a la base de datos.
+     */
     public boolean emailExists(String email) throws SQLException {
         String sql = "SELECT 1 FROM Login_details WHERE email = ?";
         try (Connection conn = getConnection();
@@ -35,7 +51,13 @@ public class UserDAO {
         }
     }
 
-    // Crear usuario
+    /**
+     * Crea un nuevo usuario en la base de datos.
+     * 
+     * @param user el objeto User que contiene los datos del usuario.
+     * @return true si el usuario fue creado exitosamente, false en caso contrario.
+     * @throws SQLException si ocurre un error al acceder a la base de datos.
+     */
     public boolean createUser(User user) throws SQLException {
         String sqlLogin = "INSERT INTO Login_details (email, passwordHash) VALUES (?, ?)";
         String sqlUser = "INSERT INTO Users (name, surname, birthday, address, country, description, isAdmin, isStore, idLogin) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -77,6 +99,13 @@ public class UserDAO {
         }
     }
 
+    /**
+     * Obtiene un usuario por su ID.
+     * 
+     * @param idUser el ID del usuario.
+     * @return el objeto User con los datos del usuario, o null si no se encuentra.
+     * @throws SQLException si ocurre un error al acceder a la base de datos.
+     */
     public User getUserById(int idUser) throws SQLException {
         String sql = "SELECT u.idUser, u.name, u.surname, u.birthday, u.address, u.country, u.description, u.isAdmin, u.isStore, l.idLogin, l.email, l.passwordHash " +
                 "FROM Users u JOIN Login_details l ON u.idLogin = l.idLogin WHERE u.idUser = ?";
@@ -109,7 +138,13 @@ public class UserDAO {
         return null;
     }
 
-
+    /**
+     * Obtiene un usuario por su correo electrónico.
+     * 
+     * @param email el correo electrónico del usuario.
+     * @return el objeto User con los datos del usuario, o null si no se encuentra.
+     * @throws SQLException si ocurre un error al acceder a la base de datos.
+     */
     public User getUserByEmail(String email) throws SQLException {
         String sql = "SELECT u.idUser, u.name, u.surname, u.birthday, u.address, u.country, u.description, u.isAdmin, u.isStore, l.idLogin, l.email, l.passwordHash " +
                 "FROM Users u JOIN Login_details l ON u.idLogin = l.idLogin WHERE l.email = ?";
@@ -137,6 +172,12 @@ public class UserDAO {
         return null;
     }
 
+    /**
+     * Obtiene todos los usuarios de la base de datos.
+     * 
+     * @return una lista de todos los usuarios.
+     * @throws SQLException si ocurre un error al acceder a la base de datos.
+     */
     public List<User> getAllUsers() throws SQLException {
         String sql = "SELECT u.idUser, u.name, u.surname, u.birthday, u.address, u.country, u.description, u.isAdmin, u.isStore, l.idLogin, l.email, l.passwordHash " +
                 "FROM Users u JOIN Login_details l ON u.idLogin = l.idLogin";
@@ -170,6 +211,13 @@ public class UserDAO {
         return users;
     }
 
+    /**
+     * Actualiza los datos de un usuario en la base de datos.
+     * 
+     * @param user el objeto User que contiene los nuevos datos del usuario.
+     * @return true si el usuario fue actualizado exitosamente, false en caso contrario.
+     * @throws SQLException si ocurre un error al acceder a la base de datos.
+     */
     public boolean updateUser(User user) throws SQLException {
         String sql = "UPDATE Users SET name = ?, surname = ?, birthday = ?, address = ?, country = ?, description = ?, isAdmin = ?, isStore = ? WHERE idUser = ?";
         try (Connection conn = getConnection();
@@ -189,6 +237,13 @@ public class UserDAO {
         }
     }
 
+    /**
+     * Elimina un usuario de la base de datos.
+     * 
+     * @param idUser el ID del usuario a eliminar.
+     * @return true si el usuario fue eliminado exitosamente, false en caso contrario.
+     * @throws SQLException si ocurre un error al acceder a la base de datos.
+     */
     public boolean deleteUser(int idUser) throws SQLException {
         String sqlSession = "DELETE FROM Sessions WHERE idUser = ?";
         String sqlUser = "DELETE FROM Users WHERE idUser = ?";
