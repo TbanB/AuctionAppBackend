@@ -5,10 +5,12 @@ package com.auctionappbackend.model;
  */
 public class LoginResponse {
     private int userId;
+    private String role;
     private String token;
 
-    public LoginResponse(int userId, String token) {
+    public LoginResponse(int userId, String role, String token) {
         this.userId = userId;
+        this.role = role;
         this.token = token;
     }
 
@@ -18,6 +20,14 @@ public class LoginResponse {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public int getRole() {
+        return userId;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getToken() {

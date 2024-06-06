@@ -64,7 +64,7 @@ public class LoginServlet extends HttpServlet {
                 System.out.println(">>> Accedemos a la app" + tokenCreated);
                 // Devolver el token al usuario
                 if (tokenCreated) {
-                    LoginResponse loginResponse = new LoginResponse(user.getIdUser(), token);
+                    LoginResponse loginResponse = new LoginResponse(user.getIdUser(), user.getRole(), token);
                     resp.getWriter().write(gson.toJson(loginResponse));
                 } else {
                     System.out.println(">>> No se ha creado el token" + tokenCreated);
